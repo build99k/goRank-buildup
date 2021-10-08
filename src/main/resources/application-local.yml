@@ -1,0 +1,6 @@
+spring:
+  datasource: #DB 접속정보
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/main
+    password: root
+    username: root
