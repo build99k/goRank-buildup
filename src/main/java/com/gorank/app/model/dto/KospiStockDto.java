@@ -1,4 +1,4 @@
-package com.gorank.app.domain.dto;
+package com.gorank.app.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class KospiStockDto {
 
-  private String no;
+  private Long stockNo;
   private String stockName;
   private String price;                // 현재가
   private String diffAmount;           // 전일비

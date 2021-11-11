@@ -1,6 +1,6 @@
-package com.gorank.app.component.stock;
+package com.gorank.app.stock.component;
 
-import com.gorank.app.domain.dto.KospiStockDto;
+import com.gorank.app.model.dto.KospiStockDto;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -52,7 +52,12 @@ public class JsoupComponent {
       }
       fields[i].setAccessible(true);
       try{
-        fields[i].set(kospiStockDto,text);
+
+        if(i==0){
+          fields[i].set(kospiStockDto,Long.parseLong(text));
+        }else{
+          fields[i].set(kospiStockDto,text);
+        }
       }catch (Exception ignored){
       }
     }

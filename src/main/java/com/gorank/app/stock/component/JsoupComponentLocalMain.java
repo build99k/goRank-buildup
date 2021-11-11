@@ -1,4 +1,4 @@
-package com.gorank.app.component.stock;
+package com.gorank.app.stock.component;
 
 import java.io.IOException;
 import org.jsoup.Connection;

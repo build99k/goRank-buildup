@@ -17,19 +17,20 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+//DB 여러개가 필요한 경우를 대비한 서정. java bean으로 컨피그 설정 정보를 셋팅한다.
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
     entityManagerFactoryRef = "mysqlEntityManager",
     transactionManagerRef = "mysqlTransactionManager",
-    basePackages = "com.gorank.app.repository")
+    basePackages = "com.gorank.app.stock")
 public class MysqlDataConfig {
 
   @Autowired
   private Environment env;
 
   @PostConstruct
-  public void init(){
+  public void init() {
     System.out.println("=============================Jpa Configuration Start");
   }
 
@@ -48,19 +49,18 @@ public class MysqlDataConfig {
   @Bean
   public LocalContainerEntityManagerFactoryBean mysqlEntityManager() {
     LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-
-    //하이버네이트 구현체 적용
-    HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    localContainerEntityManagerFactoryBean.setDataSource(mysqlDataSource());
+    localContainerEntityManagerFactoryBean.setPackagesToScan(new String[]{"com.gorank.app.stock.domain.entity"});
+    localContainerEntityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());//하이버네이트 구현체 적용
 
     //Jpa 프로퍼티 설정
     HashMap<String, Object> properties = new HashMap<>();
-    localContainerEntityManagerFactoryBean.setDataSource(mysqlDataSource());
-    localContainerEntityManagerFactoryBean.setPackagesToScan(new String[] { "com.gorank.app.domain.entity" });
-    localContainerEntityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
     properties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.main.hibernate.hbm2ddl.auto"));
     properties.put("hibernate.dialect", env.getProperty("spring.main.hibernate.dialect"));
     properties.put("hibernate.show_sql", env.getProperty("spring.jpa.properties.hibernate.show_sql"));
-    //여기에 프로퍼티 더 추가하면됨 ㅋ
+    properties.put("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
+    properties.put("hibernate.use_sql_comments", env.getProperty("spring.jpa.properties.hibernate.use_sql_comments"));
+    properties.put("hibernate.ddl-auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
 
     localContainerEntityManagerFactoryBean.setJpaPropertyMap(properties);
     return localContainerEntityManagerFactoryBean;

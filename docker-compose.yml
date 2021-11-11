@@ -1,0 +1,24 @@
+version: "3.7" # 파일 규격 버전
+services: # 이 항목 밑에 실행하려는 컨테이너 들을 정의 ( 컴포즈에서 컨테이너 : 서비스 )
+  db: # 서비스 명
+    image: mysql:5.7 # 사용할 이미지
+    restart: always
+    container_name: mysql_container_v1 # 컨테이너 이름 설정
+    ports:
+      - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
+    environment: # -e 옵션
+      - MYSQL_DATABASE=main
+      - MYSQL_ROOT_PASSWORD=root  # MYSQL 패스워드 설정 옵션
+      - MYSQL_USER=oogo
+      - MYSQL_PASSWORD=1111
+      - TZ=Asia/Seoul
+    command: # 명령어 실행
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    #volumes:
+    #  - ./db/mysql/conf.d:/etc/mysql/conf.d
+    #  - ./db/mysql/data:/var/lib/mysql
+    #  - ./db/mysql/initdb.d:/docker-entrypoint-initdb.d
+    platform: linux/amd64
+# Command로 열기
+# docker run --platform linux/amd64 -p 3306:3306 --name mysql_container -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=main -e MYSQL_USER=oogo -e MYSQL_PASSWORD=1111 -d mysql
